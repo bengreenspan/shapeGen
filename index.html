@@ -1,5 +1,3 @@
-//just need to fix the .innerHTML elements
-
 <html>
   <head>
     <script
@@ -115,7 +113,8 @@
       const input = form.querySelector("input");
       const link = document.querySelector("a");
       const container = document.querySelector("#container");
-      const averages = document.querySelector("#averages");
+      const sumSizes = document.querySelector("#sumSize");
+      const counters = document.querySelector("#counter");
       const squareButton = document.querySelector("#squareBtn")
       const circleButton = document.querySelector("#circleBtn")
       let counter = 0;
@@ -140,16 +139,16 @@
       const addCircle = (val) => {
         sumSize += val * 1;
         counter++;
-        sumSize.innerHTML = Math.round((sumSize / counter));
-        counter.innerHTML = counter;
+        sumSizes.innerHTML = Math.round((sumSize / counter));
+        counters.innerHTML = counter;
         
       };
 
       const subtractCircle = (val) => {
         sumSize -= val;
         counter--;
-        sumSize.innerHTML = (Math.round(sumSize / counter));
-        counter.innerHTML = counter;
+        sumSizes.innerHTML = (Math.round(sumSize / counter));
+        counters.innerHTML = counter;
       };
 
       const generateShape = (isCircle) => {
