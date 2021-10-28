@@ -1,55 +1,60 @@
-//need to make a couple more changes after class
+//just need to fix the .innerHTML elements
 
- flex-wrap: wrap;
+<html>
+  <head>
+    <script
+      src="https://kit.fontawesome.com/a3250bd652.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        font-family: verdana;
+        padding: 1rem;
       }
-
-      /* #container > div {
-        background-color: tomato;
-        width: 75px;
-        height: 75px;
-        border-radius: 50%;
+      form {
+        border: solid 1px dodgerBlue;
+        padding: 1rem;
         display: flex;
         justify-content: center;
-        align-items: center;
-      } */
-
-      .circle {
-        background-color: tomato;
-        width: 75px;
-        height: 75px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      }
+      input {
+        height: 3rem;
       }
 
-      .square {
-        background-color: tomato;
-        width: 75px;
-        height: 75px;
+      #container {
+        height: 100vh;
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         align-items: center;
+        align-content: flex-start;
+        flex-wrap: wrap;
       }
 
-      .shape {
       #container > div {
         background-color: tomato;
         width: 75px;
         height: 75px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #container > div > span {
+        background-color: cornSilk;
+        padding: 0.5rem;
+        border-radius: 50%;
+      }
+
+      #container > div.blue {
+        background-color: dodgerBlue;
         transition: background-color 1s;
       }
 
-      .buttonBox {
       #buttonBox {
         display: flex;
         justify-content: space-around;
-        margin-bottom: 3rem;
       }
 
-      .buttonBox button {
-        background-color: white;
-        border-style: none;
       #buttonBox button {
           background-color: white;
           border-style: none;
@@ -60,18 +65,35 @@
   </head>
   <body>
     <h1>
-      <a href="index.html">Shape Generator - </a
-      ><span>Average Size: <span id="average"></span></span>
-      <a href="index.html"
-        >Shape Generator<span>Circle Size Avg: <span id="averages"></span></span
-      ></a>
+      <a href="index.html">Shape Generator
+          <span>Circle Size Avg: 
+              <span id="sumSize"></span></span>
+              <span>Number of Circles:
+               <span id="counter"></span></span>
+            </a>
     </h1>
-    <h2><i class="fas fa-list"></i> Todos</h2>
     <h2><i class="fas fa-list"></i>  Todos</h2>
     <ul>
       <li>Create a repo named shape-generator and add this index.html page</li>
       <li>
-<h2><i class="fas fa-list"></i> Todos</h2>
+        Currently clicking on the center of a circle causes the center to
+        disappear. This is a bug, the blue circle should disappear.
+      </li>
+      <li>
+        Currently the user can enter anything in the input field. Restrict the
+        input to numbers and limit the values to be greater than 25 and less
+        than 250.
+      </li>
+      <li>
+        Within the h1 element, display the number of circles which are
+        displayed.
+      </li>
+      <li>
+        Within the h1 element, display the average size of the current circles.
+      </li>
+      <li>
+        Instead of always generating circles, generate either a circle or a
+        square.
       </li>
     </ul>
     <a href="https://github.com/FullstackAcademy/shape-generator">Repo</a>
@@ -84,12 +106,7 @@
     <form>
       <input name="px" value="25" />
     </form>
-    <div class="buttonBox">
-      <button id="squareBtn"><i class="fas fa-plus-square fa-3x"></i></button>
-      <button id="circleBtn"><i class="fas fa-plus-circle fa-3x"></i></button>
-    </div>
-
-
+    
     <div id="container"></div>
 
 
@@ -98,29 +115,16 @@
       const input = form.querySelector("input");
       const link = document.querySelector("a");
       const container = document.querySelector("#container");
-      const average = document.querySelector("#average");
-      const squareBtn = document.querySelector("#squareBtn");
-      const circleBtn = document.querySelector("#circleBtn");
-      let sizeTotal = 0;
       const averages = document.querySelector("#averages");
       const squareButton = document.querySelector("#squareBtn")
       const circleButton = document.querySelector("#circleBtn")
-      let circleSizeSum = 0;
-      let circleCount = 0;
+      let counter = 0;
+      let sumSize = 0;
 
       container.addEventListener("click", (ev) => {
-      
         if (!ev.target.id) {
-          if (ev.target.tagName === "SPAN") {
-            // console.log('classname -- ', ev.target.parentNode.style)
-            sizeTotal -= ev.target.parentNode.style.height.split("px")[0] * 1;
-            ev.target.parentNode.parentNode.removeChild(ev.target.parentNode);
-            averageCircles();
-          }
           if (ev.target.tagName === "DIV") {
-            sizeTotal -= ev.target.style.height.split("px")[0] * 1;
             ev.target.parentNode.removeChild(ev.target);
-            averageCircles();
             if(ev.target.style.borderRadius === "50%"){
             subtractCircle(ev.target.childNodes[0].innerHTML)
             }
@@ -133,62 +137,55 @@
         }
       });
 
-      const averageCircles = () => {
-        let totalCircles = 0;
-
-        container.childNodes.forEach((node) => {
-          let radius = node.style.borderRadius;
-          if (radius !== "0%" && radius !== undefined) totalCircles++;
-        });
-        if (!totalCircles) average.innerHTML = "No Circles";
-        else average.innerHTML = sizeTotal / totalCircles;
       const addCircle = (val) => {
-        circleSizeSum += val * 1;
-        circleCount++;
-        averages.innerHTML = (circleSizeSum / circleCount).toFixed(2);
+        sumSize += val * 1;
+        counter++;
+        sumSize.innerHTML = Math.round((sumSize / counter));
+        counter.innerHTML = counter;
+        
       };
 
       const subtractCircle = (val) => {
-        circleSizeSum -= val;
-        circleCount--;
-        averages.innerHTML = (circleSizeSum / circleCount).toFixed(2);
+        sumSize -= val;
+        counter--;
+        sumSize.innerHTML = (Math.round(sumSize / counter));
+        counter.innerHTML = counter;
       };
 
       const generateShape = (isCircle) => {
+        if(input.value < 25) {
+        input.value = 25;
+       }
+        else if (input.value > 250)
+        { input.value = 250;
+        } 
         const size = `${input.value}px`;
-        //without *1, text value adds differently... need to -1 for text in childNodes
         const shape = document.createElement("div");
-        shape.className = "shape";
         if(isCircle) {
             addCircle(input.value)
             shape.style.borderRadius = '50%'
         };
         shape.style.width = size;
         shape.style.height = size;
-        if(isCircle) {
-          shape.style.borderRadius = '50%'
-          sizeTotal += input.value * 1;
-        }
-        else shape.style.borderRadius = '0%'
         container.appendChild(shape);
-        if(isCircle) averageCircles();
         const span = document.createElement("span");
         span.innerText = input.value;
         shape.appendChild(span);
-    <h2><i class="fas fa-list"></i> Todos</h2>
+        input.value = 25 + Math.floor(Math.random() * 50);
+        window.setTimeout(function () {
+          shape.classList.add("blue");
+        }, 500);
+      };
+
+      form.addEventListener("submit", (ev) => {
+        ev.preventDefault();
         generateShape(true);
       });
 
-      squareBtn.addEventListener("click", (ev) => {
-        generateShape(false);
-      });
       circleButton.addEventListener('click', () => {
           generateShape(true)
       })
 
-      circleBtn.addEventListener("click", (ev) => {
-        generateShape(true);
-      });
       squareButton.addEventListener('click', () => {
           generateShape(false)
       })
@@ -199,4 +196,3 @@
     </script>
   </body>
 </html>
-</html> 
